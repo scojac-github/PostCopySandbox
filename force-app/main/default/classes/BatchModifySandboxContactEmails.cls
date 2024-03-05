@@ -13,7 +13,7 @@ public class BatchModifySandboxContactEmails implements Database.Batchable<sObje
         if(sandbox == TRUE){
         	return Database.getQueryLocator(query);
         } else if (Test.isRunningTest()){
-        	return Database.getQueryLocator(query + ' limit 1');	    
+        	return Database.getQueryLocator(query + ' limit 1');x	    
         } else {
             return Database.getQueryLocator(query + ' limit 0');
         }
