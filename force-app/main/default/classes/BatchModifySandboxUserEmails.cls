@@ -2,8 +2,11 @@ public class BatchModifySandboxUserEmails implements Database.Batchable<SObject>
 
     public Database.QueryLocator start( Database.BatchableContext scope ) {
 
-        // Get all active Admins
-        return Database.getQueryLocator( 'SELECT Id, Email FROM User WHERE isActive = TRUE AND Profile.Name = \'System Administrator\'' );
+        // Get Public Group
+        Id sandboxUsersGroupId = [SELECT Id FROM Group WHERE Name = 'Sandbox Users'].Id;
+
+        // Get all active users who are members of the Sandbox Users Public Group
+        return Database.getQueryLocator([SELECT Id, Email FROM User WHERE IsActive = TRUE AND Id IN (SELECT UserOrGroupId FROM GroupMember WHERE GroupId = :sandboxUsersGroupId)]);
     }
 
     public void execute( Database.BatchableContext scope, List<User> users ) {
